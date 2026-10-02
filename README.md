@@ -4,7 +4,7 @@ A single-page, animated portfolio showcasing softhash's Meta presence —
 5 Facebook Pages, 5 Instagram accounts, and Meta Ads performance — with
 animated stat counters, scroll-triggered reveals, and engagement bars.
 Built with Vite + vanilla JS + GSAP on the frontend, Vercel serverless
-functions + Redis (Vercel/Upstash KV) on the backend, no framework
+functions + Vercel's native Redis storage on the backend, no framework
 overhead.
 
 ## How editing works
@@ -24,12 +24,13 @@ Data Browser), in addition to the `/admin` UI.
 
 ### 1. Create the data store
 
-In the Vercel dashboard: **Project → Storage → Create Database → Redis**
-(this used to be called "Vercel KV" — now a marketplace integration,
-still works the same way). Connect it to this project. Vercel will
-auto-inject `KV_REST_API_URL` / `KV_REST_API_TOKEN` (or
-`UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` — the code checks
-both) as environment variables — nothing else to do.
+In the Vercel dashboard: **Project → Storage → Create Database → Redis**.
+When configuring it, set **High Availability** to **None** to unlock the
+**Free** plan (the paid tiers default to single-zone HA) — this app only
+stores a few KB of JSON, so Free is plenty. On the "Connect a Project"
+step, set the Custom Prefix to **`REDIS`** so it creates an environment
+variable named **`REDIS_URL`** (a standard `redis://` connection string)
+— that's the name `lib/store.js` reads.
 
 ### 2. Set the admin secrets
 
