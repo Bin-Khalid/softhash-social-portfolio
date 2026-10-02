@@ -307,18 +307,20 @@ function initFloaters() {
   layer.setAttribute("aria-hidden", "true");
 
   const specs = [
-    { from: "#facebook", left: "11%", top: "24%", depth: 46 },
-    { from: "#instagram", left: "85%", top: "20%", depth: 30 },
-    { from: "#linkedin", left: "7%", top: "66%", depth: 24 },
-    { from: "#ads", left: "88%", top: "64%", depth: 54 },
+    { from: "#facebook", left: "11%", top: "24%", mLeft: "8%", mTop: "2%", depth: 46 },
+    { from: "#instagram", left: "85%", top: "20%", mLeft: "76%", mTop: "0%", depth: 30 },
+    { from: "#linkedin", left: "7%", top: "66%", mLeft: "9%", mTop: "86%", depth: 24 },
+    { from: "#ads", left: "88%", top: "64%", mLeft: "78%", mTop: "82%", depth: 54 },
   ];
 
   const floaters = specs.map((spec) => {
     const icon = document.querySelector(`${spec.from} .platform-icon`).cloneNode(true);
     const outer = document.createElement("span");
     outer.className = "floater";
-    outer.style.left = spec.left;
-    outer.style.top = spec.top;
+    outer.style.setProperty("--l", spec.left);
+    outer.style.setProperty("--t", spec.top);
+    outer.style.setProperty("--ml", spec.mLeft);
+    outer.style.setProperty("--mt", spec.mTop);
     const inner = document.createElement("span");
     inner.className = "floater-inner";
     inner.appendChild(icon);
