@@ -300,6 +300,10 @@ main, header, footer {
   background: linear-gradient(135deg, var(--ig-1), var(--ig-2), var(--ig-3), var(--ig-4));
 }
 
+.ads-icon {
+  background: linear-gradient(135deg, var(--primary), var(--dark));
+}
+
 .platform-head h2 {
   font-size: clamp(1.6rem, 3vw, 2.1rem);
   margin: 0 0 0.4rem;
@@ -419,6 +423,14 @@ main, header, footer {
   background: linear-gradient(90deg, var(--ig-2), var(--ig-3));
 }
 
+.account-card.ads .account-avatar {
+  background: linear-gradient(135deg, var(--primary), var(--dark));
+}
+
+.account-card.ads .engagement-fill {
+  background: linear-gradient(90deg, var(--dark), var(--primary));
+}
+
 /* ---------- CTA band ---------- */
 
 .cta-band {
@@ -474,6 +486,35 @@ main, header, footer {
   height: 22px;
   margin: 0 auto 0.75rem;
   opacity: 0.8;
+}
+
+.admin-corner-link {
+  position: fixed;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: transparent;
+  font-size: 0;
+  opacity: 0.15;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.admin-corner-link:hover {
+  opacity: 0.6;
+  background: rgba(29, 21, 91, 0.08);
+}
+
+.admin-corner-link::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dark);
 }
 
 /* ---------- Scroll reveal ---------- */

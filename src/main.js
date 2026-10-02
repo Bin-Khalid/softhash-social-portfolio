@@ -1,15 +1,15 @@
 import "./style.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { facebookAccounts, instagramAccounts } from "./data/accounts.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
 function initials(name) {
-  return name
+  return String(name || "?")
     .split(" ")
+    .filter(Boolean)
     .map((w) => w[0])
     .join("")
     .slice(0, 2)
@@ -17,7 +17,7 @@ function initials(name) {
 }
 
 function formatNumber(value, decimals = 0) {
-  return Number(value).toLocaleString("en-US", {
+  return Number(value || 0).toLocaleString("en-US", {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });
@@ -28,11 +28,11 @@ function renderAccountCard(account, platform) {
   card.className = `account-card ${platform}`;
 
   card.innerHTML = `
-    <a href="${account.url}" target="_blank" rel="noopener" class="account-card-head">
+    <a href="${account.url || "#"}" target="_blank" rel="noopener" class="account-card-head">
       <div class="account-avatar">${initials(account.name)}</div>
       <div>
         <div class="account-name">${account.name}</div>
-        <div class="account-handle">${account.handle}</div>
+        <div class="account-handle">${account.handle || ""}</div>
       </div>
     </a>
     <div class="account-stats">
@@ -66,21 +66,68 @@ function renderAccountCard(account, platform) {
   return card;
 }
 
-function renderAccounts() {
-  const fbGrid = document.getElementById("facebook-grid");
-  const igGrid = document.getElementById("instagram-grid");
+function renderAdsCard(account) {
+  const card = document.createElement("div");
+  card.className = "account-card ads";
 
-  facebookAccounts.forEach((acc) => fbGrid.appendChild(renderAccountCard(acc, "fb")));
-  instagramAccounts.forEach((acc) => igGrid.appendChild(renderAccountCard(acc, "ig")));
+  card.innerHTML = `
+    <a href="${account.url || "#"}" target="_blank" rel="noopener" class="account-card-head">
+      <div class="account-avatar">${initials(account.name)}</div>
+      <div>
+        <div class="account-name">${account.name}</div>
+        <div class="account-handle">${account.accountId || ""}${account.costPerResult ? ` · ${account.currency || "USD"} ${formatNumber(account.costPerResult, 2)}/result` : ""}</div>
+      </div>
+    </a>
+    <div class="account-stats">
+      <div class="stat">
+        <span class="stat-num" data-target="${account.spend}">0</span>
+        <span class="stat-label">Spend (${account.currency || "USD"})</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-target="${account.impressions}">0</span>
+        <span class="stat-label">Impressions</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-target="${account.clicks}">0</span>
+        <span class="stat-label">Clicks</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-target="${account.results}">0</span>
+        <span class="stat-label">Results</span>
+      </div>
+      <div class="engagement-bar">
+        <div class="stat-label" style="margin-bottom:0.35rem;">
+          CTR <span class="stat-num eng-num" data-target="${account.ctr}" data-decimals="1" style="font-size:0.85rem;">0</span>%
+        </div>
+        <div class="engagement-track">
+          <div class="engagement-fill" data-fill="${account.ctr}"></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  return card;
 }
 
-function setTotals() {
-  const all = [...facebookAccounts, ...instagramAccounts];
+function renderAccounts(data) {
+  const fbGrid = document.getElementById("facebook-grid");
+  const igGrid = document.getElementById("instagram-grid");
+  const adsGrid = document.getElementById("ads-grid");
+
+  (data.facebook || []).forEach((acc) => fbGrid.appendChild(renderAccountCard(acc, "fb")));
+  (data.instagram || []).forEach((acc) => igGrid.appendChild(renderAccountCard(acc, "ig")));
+  (data.ads || []).forEach((acc) => adsGrid.appendChild(renderAdsCard(acc)));
+}
+
+function setTotals(data) {
+  const all = [...(data.facebook || []), ...(data.instagram || [])];
   const totals = {
-    followers: all.reduce((s, a) => s + a.followers, 0),
-    reach: all.reduce((s, a) => s + a.reach, 0),
-    likes: all.reduce((s, a) => s + a.likes, 0),
-    engagement: all.reduce((s, a) => s + a.engagementRate, 0) / all.length,
+    followers: all.reduce((s, a) => s + (a.followers || 0), 0),
+    reach: all.reduce((s, a) => s + (a.reach || 0), 0),
+    likes: all.reduce((s, a) => s + (a.likes || 0), 0),
+    engagement: all.length
+      ? all.reduce((s, a) => s + (a.engagementRate || 0), 0) / all.length
+      : 0,
   };
 
   const nums = document.querySelectorAll(".total-num");
@@ -105,8 +152,7 @@ function animateCountUp(el) {
   });
 }
 
-function wireScrollAnimations() {
-  // Hero + static reveals
+function wireRevealAnimations() {
   gsap.utils.toArray(".reveal").forEach((el, i) => {
     gsap.to(el, {
       opacity: 1,
@@ -121,8 +167,9 @@ function wireScrollAnimations() {
       },
     });
   });
+}
 
-  // Totals count-up
+function wireDataAnimations() {
   gsap.utils.toArray(".total-num").forEach((el) => {
     ScrollTrigger.create({
       trigger: el,
@@ -132,7 +179,6 @@ function wireScrollAnimations() {
     });
   });
 
-  // Account card entrances + stat count-ups
   gsap.utils.toArray(".account-card").forEach((card, i) => {
     gsap.fromTo(
       card,
@@ -193,8 +239,20 @@ function parallaxOrbs() {
   });
 }
 
-renderAccounts();
-setTotals();
+async function loadAndRender() {
+  try {
+    const res = await fetch("/api/accounts");
+    const data = await res.json();
+    renderAccounts(data);
+    setTotals(data);
+    wireDataAnimations();
+    ScrollTrigger.refresh();
+  } catch (err) {
+    console.error("Failed to load account data:", err);
+  }
+}
+
 initHeroEntrance();
-wireScrollAnimations();
+wireRevealAnimations();
 parallaxOrbs();
+loadAndRender();

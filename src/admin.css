@@ -1,0 +1,234 @@
+.admin-body {
+  background: var(--light);
+  min-height: 100vh;
+}
+
+.admin-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 6rem;
+}
+
+.admin-shell--center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.admin-card {
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 24px 50px -30px rgba(29, 21, 91, 0.35);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-card h1 {
+  margin: 0;
+  color: var(--dark);
+  font-size: 1.4rem;
+}
+
+.admin-sub {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.admin-error {
+  background: #fde8e8;
+  color: #b42318;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.admin-banner {
+  background: #eafaf0;
+  color: #0a7a3c;
+  padding: 0.7rem 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem;
+}
+
+.login-card input {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  font-size: 0.95rem;
+}
+
+.admin-btn {
+  padding: 0.65rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.admin-btn:hover {
+  transform: translateY(-1px);
+}
+
+.admin-btn--primary {
+  background: var(--dark);
+  color: #fff;
+  border-color: var(--dark);
+}
+
+.admin-btn--primary:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.admin-btn--danger {
+  background: #fff;
+  color: #b42318;
+  border-color: #f3c6c3;
+}
+
+.admin-back {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.admin-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-top h1 {
+  margin: 0;
+  color: var(--dark);
+}
+
+.admin-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-section {
+  margin-bottom: 2.5rem;
+}
+
+.admin-section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.admin-section-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--dark);
+}
+
+.admin-account-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.admin-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.admin-account-card {
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-left: 4px solid var(--fb);
+  border-radius: 14px;
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-account-card.ig {
+  border-left-color: var(--ig-2);
+}
+
+.admin-account-card.ads {
+  border-left-color: var(--primary);
+}
+
+.admin-account-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.admin-field input {
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.admin-save-bar {
+  position: sticky;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 20px 40px -24px rgba(29, 21, 91, 0.35);
+}
+
+#dirty-indicator {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+#dirty-indicator.dirty {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .admin-account-fields {
+    grid-template-columns: 1fr;
+  }
+}
