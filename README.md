@@ -1,8 +1,9 @@
 # softhash social — Growth Portfolio
 
-A single-page, animated portfolio showcasing softhash's Meta presence —
-5 Facebook Pages, 5 Instagram accounts, and Meta Ads performance — with
-animated stat counters, scroll-triggered reveals, and engagement bars.
+A single-page, animated portfolio showcasing softhash's social presence
+— Facebook Pages, Instagram accounts, LinkedIn Pages, and Meta Ads
+performance — with animated stat counters, scroll-triggered reveals,
+and engagement bars.
 Built with Vite + vanilla JS + GSAP on the frontend, Vercel serverless
 functions + Vercel's native Redis storage on the backend, no framework
 overhead.
@@ -13,7 +14,7 @@ There's a password-protected admin page at **`/admin`** (a small dot in
 the public page's bottom-right corner also links there). Log in, edit
 any field, click **Save changes** — the public site reflects it
 immediately, no redeploy needed. You can add or remove accounts on any
-of the three platforms (Facebook, Instagram, Meta Ads) freely.
+of the four platforms (Facebook, Instagram, LinkedIn, Meta Ads) freely.
 
 The data also lives in a plain Redis key (`softhash:accounts`) once
 connected, so you can inspect or hand-edit it from Vercel's own data

@@ -1,7 +1,7 @@
 import { getData, saveData } from "../lib/store.js";
 import { isAuthenticated } from "../lib/auth.js";
 
-const PLATFORMS = ["facebook", "instagram", "ads"];
+const PLATFORMS = ["facebook", "instagram", "linkedin", "ads"];
 
 function randomId() {
   return Math.random().toString(36).slice(2, 10);

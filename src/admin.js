@@ -32,6 +32,20 @@ const SCHEMAS = {
       { key: "engagementRate", label: "Engagement %", type: "number", step: "0.1" },
     ],
   },
+  linkedin: {
+    label: "LinkedIn Pages",
+    accentClass: "li",
+    fields: [
+      { key: "name", label: "Page name", type: "text" },
+      { key: "handle", label: "Handle", type: "text", placeholder: "@handle" },
+      { key: "url", label: "Page URL", type: "url" },
+      { key: "followers", label: "Followers", type: "number" },
+      { key: "reach", label: "Reach", type: "number" },
+      { key: "likes", label: "Reactions", type: "number" },
+      { key: "posts", label: "Posts", type: "number" },
+      { key: "engagementRate", label: "Engagement %", type: "number", step: "0.1" },
+    ],
+  },
   ads: {
     label: "Meta Ads Accounts",
     accentClass: "ads",
@@ -50,7 +64,7 @@ const SCHEMAS = {
   },
 };
 
-let state = { facebook: [], instagram: [], ads: [] };
+let state = { facebook: [], instagram: [], linkedin: [], ads: [] };
 let dirty = false;
 
 function randomId() {
@@ -174,6 +188,7 @@ function renderDashboard(message) {
       <div id="sections">
         ${renderPlatformSection("facebook")}
         ${renderPlatformSection("instagram")}
+        ${renderPlatformSection("linkedin")}
         ${renderPlatformSection("ads")}
       </div>
 

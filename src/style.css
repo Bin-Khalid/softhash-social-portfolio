@@ -8,6 +8,7 @@
   --ig-2: #d62976;
   --ig-3: #962fbf;
   --ig-4: #4f5bd5;
+  --li: #0a66c2;
   --ink: #16122f;
   --muted: #6b667f;
   --card-bg: rgba(255, 255, 255, 0.7);
@@ -300,6 +301,10 @@ main, header, footer {
   background: linear-gradient(135deg, var(--ig-1), var(--ig-2), var(--ig-3), var(--ig-4));
 }
 
+.li-icon {
+  background: var(--li);
+}
+
 .ads-icon {
   background: linear-gradient(135deg, var(--primary), var(--dark));
 }
@@ -421,6 +426,14 @@ main, header, footer {
 
 .account-card.ig .engagement-fill {
   background: linear-gradient(90deg, var(--ig-2), var(--ig-3));
+}
+
+.account-card.li .account-avatar {
+  background: var(--li);
+}
+
+.account-card.li .engagement-fill {
+  background: var(--li);
 }
 
 .account-card.ads .account-avatar {

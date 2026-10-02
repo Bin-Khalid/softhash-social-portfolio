@@ -112,15 +112,17 @@ function renderAdsCard(account) {
 function renderAccounts(data) {
   const fbGrid = document.getElementById("facebook-grid");
   const igGrid = document.getElementById("instagram-grid");
+  const liGrid = document.getElementById("linkedin-grid");
   const adsGrid = document.getElementById("ads-grid");
 
   (data.facebook || []).forEach((acc) => fbGrid.appendChild(renderAccountCard(acc, "fb")));
   (data.instagram || []).forEach((acc) => igGrid.appendChild(renderAccountCard(acc, "ig")));
+  (data.linkedin || []).forEach((acc) => liGrid.appendChild(renderAccountCard(acc, "li")));
   (data.ads || []).forEach((acc) => adsGrid.appendChild(renderAdsCard(acc)));
 }
 
 function setTotals(data) {
-  const all = [...(data.facebook || []), ...(data.instagram || [])];
+  const all = [...(data.facebook || []), ...(data.instagram || []), ...(data.linkedin || [])];
   const totals = {
     followers: all.reduce((s, a) => s + (a.followers || 0), 0),
     reach: all.reduce((s, a) => s + (a.reach || 0), 0),

@@ -173,6 +173,10 @@
   border-left-color: var(--ig-2);
 }
 
+.admin-account-card.li {
+  border-left-color: var(--li);
+}
+
 .admin-account-card.ads {
   border-left-color: var(--primary);
 }
