@@ -346,9 +346,21 @@ main, header, footer {
 }
 
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.25rem;
+}
+
+.card-grid > .account-card {
+  flex: 1 1 230px;
+  max-width: 300px;
+}
+
+@media (max-width: 600px) {
+  .card-grid > .account-card {
+    max-width: none;
+  }
 }
 
 .account-card {
@@ -450,6 +462,14 @@ main, header, footer {
 
 .account-card.ig .engagement-fill {
   background: linear-gradient(90deg, var(--ig-2), var(--ig-3));
+}
+
+.account-card.fb .account-avatar {
+  background: var(--fb);
+}
+
+.account-card.fb .engagement-fill {
+  background: var(--fb);
 }
 
 .account-card.li .account-avatar {
@@ -696,11 +716,18 @@ main, header, footer {
 
 /* ---------- Marquee strip ---------- */
 
-.marquee {
+.marquee-wrap {
   position: relative;
   z-index: 2;
   overflow: hidden;
-  margin: 0 -4vw 3rem;
+  padding: 1.5rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  margin: 0 -4vw;
   padding: 1.4rem 0;
   transform: rotate(-1.6deg);
   border-block: 1px solid var(--card-border);
