@@ -370,8 +370,8 @@ function initFloaters() {
   const specs = [
     { from: "#facebook", left: "11%", top: "24%", mLeft: "8%", mTop: "2%", depth: 46 },
     { from: "#instagram", left: "85%", top: "20%", mLeft: "76%", mTop: "0%", depth: 30 },
-    { from: "#linkedin", left: "7%", top: "66%", mLeft: "9%", mTop: "86%", depth: 24 },
-    { from: "#ads", left: "88%", top: "64%", mLeft: "78%", mTop: "82%", depth: 54 },
+    { from: "#linkedin", left: "7%", top: "66%", mLeft: "9%", mTop: "78%", depth: 24 },
+    { from: "#ads", left: "88%", top: "64%", mLeft: "76%", mTop: "70%", depth: 54 },
   ];
 
   const floaters = specs.map((spec) => {
