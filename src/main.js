@@ -177,6 +177,11 @@ function setTotals(data) {
   nums[1].dataset.target = totals.reach;
   nums[2].dataset.target = totals.likes;
   nums[3].dataset.target = totals.engagement.toFixed(1);
+
+  const ring = document.querySelector(".big-ring-progress");
+  if (ring) ring.dataset.fill = totals.engagement.toFixed(1);
+  const chip = document.getElementById("totals-chip");
+  if (chip && all.length) chip.textContent = `Across ${all.length} account${all.length === 1 ? "" : "s"}`;
 }
 
 const compactFormat = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 });
@@ -269,6 +274,19 @@ function wireDataAnimations() {
       onEnter: () => animateCountUp(el),
     });
   });
+
+  const bigRing = document.querySelector(".big-ring-progress");
+  if (bigRing) {
+    ScrollTrigger.create({
+      trigger: bigRing,
+      start: "top 88%",
+      once: true,
+      onEnter: () => {
+        const pct = Math.min(Number(bigRing.dataset.fill) * 10, 100);
+        gsap.to(bigRing, { strokeDashoffset: 150.8 * (1 - pct / 100), duration: 1.6, ease: "power2.out" });
+      },
+    });
+  }
 
   gsap.utils.toArray(".account-card").forEach((card, i) => {
     gsap.fromTo(

@@ -259,89 +259,166 @@ main, header, footer {
   max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: 1.35fr 1fr 1fr;
+  grid-auto-rows: minmax(150px, auto);
+  gap: 1.1rem;
 }
 
 .total-card {
-  --glow: #ffb347;
-  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
-  padding: 1.5rem 1.4rem 1.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  color: #fff;
-  background: linear-gradient(150deg, #1d155b 0%, #2b2280 100%);
-  box-shadow: 0 30px 50px -30px rgba(29, 21, 91, 0.75);
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.6rem;
+  border-radius: 28px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 24px 48px -32px rgba(29, 21, 91, 0.45);
 }
 
-.total-card::before {
-  content: "";
+.tile-hero {
+  grid-row: 1 / span 2;
+  color: #fff;
+  background: linear-gradient(150deg, #ff9a3c 0%, #ee4f86 55%, #8f3cff 100%);
+  border: 0;
+  box-shadow: 0 34px 60px -30px rgba(238, 79, 134, 0.7);
+}
+
+.tile-wide {
+  grid-column: 2 / span 2;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.4rem;
+}
+
+.tile-wm {
   position: absolute;
-  width: 190px;
-  height: 190px;
-  right: -70px;
-  top: -80px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--glow), transparent 65%);
-  opacity: 0.5;
+  right: -30px;
+  bottom: -40px;
+  width: 230px;
+  height: 230px;
+  max-width: none;
+  fill: #fff;
+  opacity: 0.16;
   pointer-events: none;
 }
 
-.totals-grid .total-card:nth-child(2) { --glow: #ff5c9d; }
-.totals-grid .total-card:nth-child(3) { --glow: #5b9bff; }
-.totals-grid .total-card:nth-child(4) { --glow: #b57bff; }
-
-.total-icon {
+.tile-chip {
   position: relative;
-  width: 42px;
-  height: 42px;
-  margin-bottom: 0.9rem;
-  border-radius: 14px;
+  align-self: flex-start;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.tile-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
-.total-icon svg {
+.tile-icon svg {
   width: 20px;
   height: 20px;
-  fill: var(--glow);
+  fill: #fff;
 }
+
+.tile-icon.reach { background: linear-gradient(135deg, #ff5c9d, #d62976); }
+.tile-icon.likes { background: linear-gradient(135deg, #5b9bff, #1877f2); }
 
 .total-value {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.2rem;
+  gap: 0.15rem 0.3rem;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  font-size: clamp(1.25rem, 3.4vw, 1.9rem);
   letter-spacing: -0.03em;
-  line-height: 1.1;
+  line-height: 1.05;
   font-variant-numeric: tabular-nums;
+  color: var(--dark);
 }
 
-.total-num {
+.tile-hero .total-value {
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
   color: #fff;
 }
 
 .total-suffix {
-  font-size: 0.6em;
-  color: var(--glow);
+  margin-left: -0.15rem;
+  color: var(--ig-3);
+}
+
+.eng-title {
+  margin-left: 0.35rem;
+  font-size: 0.62em;
+  letter-spacing: -0.02em;
 }
 
 .total-label {
   position: relative;
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--muted);
+}
+
+.tile-hero .total-label {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.big-ring {
+  position: relative;
+  flex: none;
+  width: 86px;
+  height: 86px;
+}
+
+.big-ring > svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.big-ring-track,
+.big-ring-progress {
+  fill: none;
+  stroke-width: 6;
+}
+
+.big-ring-track {
+  stroke: rgba(29, 21, 91, 0.09);
+}
+
+.big-ring-progress {
+  stroke: var(--ig-3);
+  stroke-linecap: round;
+  stroke-dasharray: 150.8;
+  stroke-dashoffset: 150.8;
+}
+
+.big-ring-icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.big-ring-icon svg {
+  width: 26px;
+  height: 26px;
+  fill: var(--ig-3);
 }
 
 /* ---------- Platform sections ---------- */
@@ -789,11 +866,26 @@ a.account-card {
 
 @media (max-width: 760px) {
   .totals-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .tile-hero {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    min-height: 190px;
+  }
+
+  .tile-wide {
+    grid-column: 1 / -1;
   }
 
   .total-card {
-    padding: 1.2rem 1rem 1.1rem;
+    padding: 1.2rem 1.1rem;
+  }
+
+  .eng-title {
+    margin-left: 0;
   }
 }
 
@@ -1016,8 +1108,8 @@ a.account-card {
   opacity: 1;
 }
 
-.total-card::after {
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.16), transparent 55%);
+.tile-hero::after {
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.3), transparent 55%);
 }
 
 /* ---------- Pulsing platform icons, shimmering bars, CTA pulse ---------- */
