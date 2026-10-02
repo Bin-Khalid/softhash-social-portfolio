@@ -256,21 +256,21 @@ main, header, footer {
 }
 
 .totals-grid {
-  max-width: 1100px;
+  max-width: 1000px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.35fr 1fr 1fr;
-  grid-auto-rows: minmax(150px, auto);
-  gap: 1.1rem;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  grid-auto-rows: minmax(118px, auto);
+  gap: 1rem;
 }
 
 .total-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1.6rem;
-  border-radius: 28px;
+  gap: 0.8rem;
+  padding: 1.25rem 1.35rem;
+  border-radius: 24px;
   color: var(--ink);
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid var(--card-border);
@@ -297,8 +297,8 @@ main, header, footer {
   position: absolute;
   right: -30px;
   bottom: -40px;
-  width: 230px;
-  height: 230px;
+  width: 180px;
+  height: 180px;
   max-width: none;
   fill: #fff;
   opacity: 0.16;
@@ -316,16 +316,16 @@ main, header, footer {
 }
 
 .tile-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
   display: grid;
   place-items: center;
 }
 
 .tile-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   fill: #fff;
 }
 
@@ -340,7 +340,7 @@ main, header, footer {
   gap: 0.15rem 0.3rem;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.25rem, 3.4vw, 1.9rem);
+  font-size: clamp(1.15rem, 2.2vw, 1.55rem);
   letter-spacing: -0.03em;
   line-height: 1.05;
   font-variant-numeric: tabular-nums;
@@ -348,7 +348,7 @@ main, header, footer {
 }
 
 .tile-hero .total-value {
-  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
   color: #fff;
 }
 
@@ -381,8 +381,8 @@ main, header, footer {
 .big-ring {
   position: relative;
   flex: none;
-  width: 86px;
-  height: 86px;
+  width: 72px;
+  height: 72px;
 }
 
 .big-ring > svg {
@@ -416,8 +416,8 @@ main, header, footer {
 }
 
 .big-ring-icon svg {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   fill: var(--ig-3);
 }
 
@@ -486,8 +486,8 @@ main, header, footer {
 }
 
 .card-grid > .account-card {
-  flex: 1 1 230px;
-  max-width: 300px;
+  flex: 1 1 250px;
+  max-width: 350px;
 }
 
 @media (max-width: 600px) {
@@ -873,7 +873,7 @@ a.account-card {
   .tile-hero {
     grid-column: 1 / -1;
     grid-row: auto;
-    min-height: 190px;
+    min-height: 170px;
   }
 
   .tile-wide {
@@ -1015,7 +1015,7 @@ a.account-card {
   position: relative;
   overflow: hidden;
   margin: 0 -4vw;
-  padding: 1.4rem 0;
+  padding: 1rem 0;
   transform: rotate(-1.6deg);
   border-block: 1px solid var(--card-border);
   background: rgba(255, 255, 255, 0.35);
@@ -1031,8 +1031,8 @@ a.account-card {
 .marquee-group {
   display: flex;
   align-items: center;
-  gap: 2.4rem;
-  padding-right: 2.4rem;
+  gap: 2rem;
+  padding-right: 2rem;
 }
 
 .mq-item {
@@ -1041,7 +1041,7 @@ a.account-card {
   gap: 0.9rem;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.5rem, 4vw, 2.7rem);
+  font-size: clamp(1.15rem, 2.5vw, 1.85rem);
   line-height: 1;
   letter-spacing: -0.03em;
   text-transform: uppercase;
