@@ -171,6 +171,51 @@ function wireRevealAnimations() {
   });
 }
 
+const THEMES = {
+  top: { "--page-bg": "#fff6ec", "--orb-1": "#ffb347", "--orb-2": "#1d155b", "--orb-3": "#d62976", "--bar": "#dc8215" },
+  totals: { "--page-bg": "#fff6ec", "--orb-1": "#ffb347", "--orb-2": "#1d155b", "--orb-3": "#d62976", "--bar": "#dc8215" },
+  facebook: { "--page-bg": "#eaf2ff", "--orb-1": "#1877f2", "--orb-2": "#4f8cff", "--orb-3": "#8ab4ff", "--bar": "#1877f2" },
+  instagram: { "--page-bg": "#ffeef5", "--orb-1": "#d62976", "--orb-2": "#962fbf", "--orb-3": "#feda75", "--bar": "#d62976" },
+  linkedin: { "--page-bg": "#e8f2fb", "--orb-1": "#0a66c2", "--orb-2": "#5aa2e6", "--orb-3": "#1d155b", "--bar": "#0a66c2" },
+  ads: { "--page-bg": "#fff2e0", "--orb-1": "#dc8215", "--orb-2": "#1d155b", "--orb-3": "#ffb347", "--bar": "#dc8215" },
+  cta: { "--page-bg": "#ece8fa", "--orb-1": "#1d155b", "--orb-2": "#962fbf", "--orb-3": "#ffb347", "--bar": "#1d155b" },
+};
+
+function wireColorTheme() {
+  const root = document.documentElement;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const applyTheme = (name) => {
+    gsap.to(root, {
+      ...THEMES[name],
+      duration: reduceMotion ? 0 : 1.2,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
+  };
+
+  Object.keys(THEMES).forEach((id) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 55%",
+      end: "bottom 55%",
+      onEnter: () => applyTheme(id),
+      onEnterBack: () => applyTheme(id),
+    });
+  });
+
+  const bar = document.querySelector(".scroll-progress");
+  if (bar) {
+    ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onUpdate: (self) => gsap.set(bar, { scaleX: self.progress }),
+    });
+  }
+}
+
 function wireDataAnimations() {
   gsap.utils.toArray(".total-num").forEach((el) => {
     ScrollTrigger.create({
@@ -256,5 +301,6 @@ async function loadAndRender() {
 
 initHeroEntrance();
 wireRevealAnimations();
+wireColorTheme();
 parallaxOrbs();
 loadAndRender();
