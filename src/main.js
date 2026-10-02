@@ -1,3 +1,4 @@
+import "@fontsource-variable/unbounded";
 import "./style.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -41,9 +42,13 @@ function safeUrl(value) {
   }
 }
 
-function watermark(platform) {
+function platformSvg(platform) {
   const svg = document.querySelector(`${PLATFORM_SECTION[platform]} .platform-icon svg`);
-  return svg ? svg.outerHTML.replace("<svg", '<svg class="card-watermark" aria-hidden="true"') : "";
+  return svg ? svg.outerHTML : "";
+}
+
+function watermark(platform) {
+  return platformSvg(platform).replace("<svg", '<svg class="card-watermark" aria-hidden="true"');
 }
 
 function ringHtml(value, label) {
@@ -175,7 +180,7 @@ function setTotals(data) {
 }
 
 const compactFormat = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 });
-const COMPACT_FROM = { hero: 1_000_000, mini: 10_000 };
+const COMPACT_FROM = { hero: 1_000_000, mini: 10_000, total: 1_000_000 };
 
 function animateCountUp(el) {
   const target = Number(el.dataset.target);
@@ -406,8 +411,21 @@ function initFloaters() {
 
 function initMarquee() {
   const track = document.querySelector(".marquee-track");
-  if (!track || reduceMotion) return;
+  if (!track) return;
   const group = track.firstElementChild;
+
+  const items = [
+    { label: "Facebook", key: "fb" },
+    { label: "Instagram", key: "ig" },
+    { label: "LinkedIn", key: "li" },
+    { label: "Meta Ads", key: "ads" },
+  ];
+  const once = items
+    .map((it) => `<span class="mq-item ${it.key}"><span class="mq-icon">${platformSvg(it.key)}</span>${it.label}</span><i class="mq-sep"></i>`)
+    .join("");
+  group.innerHTML = once + once;
+
+  if (reduceMotion) return;
   track.appendChild(group.cloneNode(true));
 
   const loop = gsap.to(track, { xPercent: -50, ease: "none", duration: 28, repeat: -1 });
