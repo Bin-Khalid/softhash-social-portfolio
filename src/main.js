@@ -26,90 +26,122 @@ function formatNumber(value, decimals = 0) {
   });
 }
 
-function renderAccountCard(account, platform) {
-  const card = document.createElement("div");
+const PLATFORM_SECTION = { fb: "#facebook", ig: "#instagram", li: "#linkedin", ads: "#ads" };
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
+function safeUrl(value) {
+  try {
+    const u = new URL(value);
+    return /^https?:$/.test(u.protocol) ? u.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function watermark(platform) {
+  const svg = document.querySelector(`${PLATFORM_SECTION[platform]} .platform-icon svg`);
+  return svg ? svg.outerHTML.replace("<svg", '<svg class="card-watermark" aria-hidden="true"') : "";
+}
+
+function ringHtml(value, label) {
+  const v = Number(value) || 0;
+  return `
+    <div class="ring">
+      <div class="ring-gauge">
+        <svg viewBox="0 0 44 44" aria-hidden="true">
+          <circle class="ring-track" cx="22" cy="22" r="18"></circle>
+          <circle class="ring-progress" cx="22" cy="22" r="18" data-fill="${v}"></circle>
+        </svg>
+        <div class="ring-center"><span class="stat-num eng-num" data-target="${v}" data-decimals="1">0</span>%</div>
+      </div>
+      <span class="ring-label">${esc(label)}</span>
+    </div>`;
+}
+
+function createCard({ platform, name, sub, url, heroValue, heroLabel, ringValue, ringLabel, mini, foot }) {
+  const href = safeUrl(url);
+  const card = document.createElement(href ? "a" : "div");
   card.className = `account-card ${platform}`;
+  if (href) {
+    card.href = href;
+    card.target = "_blank";
+    card.rel = "noopener";
+    card.setAttribute("aria-label", `${name} — open profile`);
+  }
 
   card.innerHTML = `
-    <a href="${account.url || "#"}" target="_blank" rel="noopener" class="account-card-head">
-      <div class="account-avatar">${initials(account.name)}</div>
-      <div>
-        <div class="account-name">${account.name}</div>
-        <div class="account-handle">${account.handle || ""}</div>
+    ${watermark(platform)}
+    <div class="card-top">
+      <div class="account-avatar">${esc(initials(name))}</div>
+      <div class="card-id">
+        <div class="account-name">${esc(name)}</div>
+        <div class="account-handle">${esc(sub)}</div>
       </div>
-    </a>
-    <div class="account-stats">
-      <div class="stat">
-        <span class="stat-num" data-target="${account.followers}">0</span>
-        <span class="stat-label">Followers</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num" data-target="${account.reach}">0</span>
-        <span class="stat-label">Reach</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num" data-target="${account.likes}">0</span>
-        <span class="stat-label">Likes</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num" data-target="${account.posts}">0</span>
-        <span class="stat-label">Posts</span>
-      </div>
-      <div class="engagement-bar">
-        <div class="stat-label" style="margin-bottom:0.35rem;">
-          Engagement <span class="stat-num eng-num" data-target="${account.engagementRate}" data-decimals="1" style="font-size:0.85rem;">0</span>%
-        </div>
-        <div class="engagement-track">
-          <div class="engagement-fill" data-fill="${account.engagementRate}"></div>
-        </div>
-      </div>
+      ${href ? '<span class="card-arrow" aria-hidden="true">↗</span>' : ""}
     </div>
+    <div class="card-hero">
+      <div class="hero-metric">
+        <span class="hero-num stat-num" data-target="${Number(heroValue) || 0}" data-compact="hero">0</span>
+        <span class="hero-label">${esc(heroLabel)}</span>
+      </div>
+      ${ringHtml(ringValue, ringLabel)}
+    </div>
+    <div class="card-mini">
+      ${mini
+        .map(
+          (m) => `
+        <div class="mini">
+          <span class="stat-num" data-target="${Number(m.value) || 0}" data-compact="mini">0</span>
+          <span class="stat-label">${esc(m.label)}</span>
+        </div>`
+        )
+        .join("")}
+    </div>
+    ${foot ? `<div class="card-foot">${esc(foot)}</div>` : ""}
   `;
 
   return card;
 }
 
+function renderAccountCard(account, platform) {
+  return createCard({
+    platform,
+    name: account.name,
+    sub: account.handle,
+    url: account.url,
+    heroValue: account.followers,
+    heroLabel: "Followers",
+    ringValue: account.engagementRate,
+    ringLabel: "Engagement",
+    mini: [
+      { value: account.reach, label: "Reach" },
+      { value: account.likes, label: platform === "li" ? "Reactions" : "Likes" },
+      { value: account.posts, label: "Posts" },
+    ],
+  });
+}
+
 function renderAdsCard(account) {
-  const card = document.createElement("div");
-  card.className = "account-card ads";
-
-  card.innerHTML = `
-    <a href="${account.url || "#"}" target="_blank" rel="noopener" class="account-card-head">
-      <div class="account-avatar">${initials(account.name)}</div>
-      <div>
-        <div class="account-name">${account.name}</div>
-        <div class="account-handle">${account.accountId || ""}${account.costPerResult ? ` · ${account.currency || "USD"} ${formatNumber(account.costPerResult, 2)}/result` : ""}</div>
-      </div>
-    </a>
-    <div class="account-stats">
-      <div class="stat">
-        <span class="stat-num" data-target="${account.spend}">0</span>
-        <span class="stat-label">Spend (${account.currency || "USD"})</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num" data-target="${account.impressions}">0</span>
-        <span class="stat-label">Impressions</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num" data-target="${account.clicks}">0</span>
-        <span class="stat-label">Clicks</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num" data-target="${account.results}">0</span>
-        <span class="stat-label">Results</span>
-      </div>
-      <div class="engagement-bar">
-        <div class="stat-label" style="margin-bottom:0.35rem;">
-          CTR <span class="stat-num eng-num" data-target="${account.ctr}" data-decimals="1" style="font-size:0.85rem;">0</span>%
-        </div>
-        <div class="engagement-track">
-          <div class="engagement-fill" data-fill="${account.ctr}"></div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  return card;
+  const currency = account.currency || "USD";
+  return createCard({
+    platform: "ads",
+    name: account.name,
+    sub: account.accountId,
+    url: account.url,
+    heroValue: account.spend,
+    heroLabel: `Spend · ${currency}`,
+    ringValue: account.ctr,
+    ringLabel: "CTR",
+    mini: [
+      { value: account.impressions, label: "Impressions" },
+      { value: account.clicks, label: "Clicks" },
+      { value: account.results, label: "Results" },
+    ],
+    foot: account.costPerResult ? `${currency} ${formatNumber(account.costPerResult, 2)} per result` : "",
+  });
 }
 
 function renderAccounts(data) {
@@ -142,9 +174,13 @@ function setTotals(data) {
   nums[3].dataset.target = totals.engagement.toFixed(1);
 }
 
+const compactFormat = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 });
+const COMPACT_FROM = { hero: 1_000_000, mini: 10_000 };
+
 function animateCountUp(el) {
   const target = Number(el.dataset.target);
   const decimals = Number(el.dataset.decimals || 0);
+  const compact = target >= (COMPACT_FROM[el.dataset.compact] ?? Infinity);
   const obj = { val: 0 };
 
   gsap.to(obj, {
@@ -152,7 +188,7 @@ function animateCountUp(el) {
     duration: 1.8,
     ease: "power2.out",
     onUpdate: () => {
-      el.textContent = formatNumber(obj.val, decimals);
+      el.textContent = compact ? compactFormat.format(obj.val) : formatNumber(obj.val, decimals);
     },
   });
 }
@@ -253,9 +289,11 @@ function wireDataAnimations() {
       once: true,
       onEnter: () => {
         card.querySelectorAll(".stat-num").forEach(animateCountUp);
-        const fill = card.querySelector(".engagement-fill");
-        const pct = Math.min(Number(fill.dataset.fill) * 10, 100);
-        gsap.to(fill, { width: `${pct}%`, duration: 1.4, ease: "power2.out" });
+        const ring = card.querySelector(".ring-progress");
+        if (ring) {
+          const pct = Math.min(Number(ring.dataset.fill) * 10, 100);
+          gsap.to(ring, { strokeDashoffset: 113.1 * (1 - pct / 100), duration: 1.6, ease: "power2.out" });
+        }
       },
     });
   });
