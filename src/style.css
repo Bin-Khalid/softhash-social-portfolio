@@ -125,8 +125,26 @@ main, header, footer {
   padding: 1.5rem clamp(1.25rem, 5vw, 4rem);
 }
 
+.brand,
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 .brand-logo {
-  height: 32px;
+  height: 48px;
+}
+
+.brand-text {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.brand-text b {
+  font-weight: 800;
 }
 
 .nav-cta {
@@ -495,10 +513,16 @@ main, header, footer {
   font-size: 0.85rem;
 }
 
+.footer-brand {
+  margin-bottom: 0.75rem;
+}
+
 .footer-logo {
-  height: 22px;
-  margin: 0 auto 0.75rem;
-  opacity: 0.8;
+  height: 36px;
+}
+
+.footer-brand .brand-text {
+  font-size: 1rem;
 }
 
 .admin-corner-link {
